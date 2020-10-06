@@ -80,5 +80,4 @@ exports.requireSignin = expressJwt({
       };
 
       next();
-  };
-  
+};
