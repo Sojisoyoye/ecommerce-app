@@ -1,8 +1,9 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const { userById } = require('../controllers/user');
+import { userById } from '../controllers/user';
+
+const router = express.Router();
 
 router.param('userId', userById);
 
-module.exports = router;
+export default router;

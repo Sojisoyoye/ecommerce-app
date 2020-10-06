@@ -1,11 +1,10 @@
-const formidable = require('formidable');
-const _ = require('lodash');
-const fs = require('fs');
-const Product = require('../models/product');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+import formidable from 'formidable';
+import _ from 'lodash';
+import fs from 'fs';
+import Product from '../models/product';
+import errorHandler from '../helpers/dbErrorHandler';
 
-
-exports.productById = (req, res, next, id) => {
+export const productById = (req, res, next, id) => {
     Product.findById(id).exec((err, product) => {
         if (err || !product) {
             return res.status(404).json({
@@ -18,7 +17,7 @@ exports.productById = (req, res, next, id) => {
     });
 };
 
-exports.create = (req, res) => {
+export const create = (req, res) => {
     let form = new formidable.IncomingForm();
 
     form.keepExtensions = true;
@@ -62,13 +61,13 @@ exports.create = (req, res) => {
     });
 };
 
-exports.getProduct = (req, res) => {
+export const getProduct = (req, res) => {
     req.product.photo = undefined;
 
     return res.json(req.product);
 };
 
-exports.updateProduct = (req, res) => {
+export const updateProduct = (req, res) => {
     let form = new formidable.IncomingForm();
 
     form.keepExtensions = true;
@@ -114,7 +113,7 @@ exports.updateProduct = (req, res) => {
     });
 }
 
-exports.deleteProduct = (req, res) => {
+export const deleteProduct = (req, res) => {
     let product = req.product;
 
     product.remove((err) => {

@@ -1,9 +1,11 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const { create, categoryById, getCategories, getCategory, updateCategory, deleteCategory } = require('../controllers/category');
-const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
-const { userById } = require('../controllers/user');
+import { create, categoryById, getCategories, getCategory, updateCategory, deleteCategory } from '../controllers/category';
+import { requireSignin } from '../controllers/auth';
+import { isAuth, isAdmin } from '../middlewares/authMiddlewares';
+import { userById } from '../controllers/user';
+
+const router = express.Router();
 
 
 router.get('/categories', getCategories);
@@ -15,4 +17,4 @@ router.delete('/category/:categoryId/:userId', requireSignin, isAuth, isAdmin, d
 router.param('userId', userById);
 router.param('categoryId', categoryById);
 
-module.exports = router;
+export default router;

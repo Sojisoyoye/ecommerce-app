@@ -1,7 +1,7 @@
-const Category = require('../models/category');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+import Category from '../models/category';
+import { errorHandler } from '../helpers/dbErrorHandler';;
 
-exports.categoryById = (req, res, next, id) => {
+export const categoryById = (req, res, next, id) => {
     Category.findById(id).exec((err, category) => {
         if (err || !category) {
             return res.status(404).json({
@@ -14,7 +14,7 @@ exports.categoryById = (req, res, next, id) => {
     });
 };
 
-exports.create = (req, res) => {
+export const create = (req, res) => {
     const category = new Category(req.body);
 
     category.save((err, data) => {
@@ -28,11 +28,11 @@ exports.create = (req, res) => {
     })
 };
 
-exports.getCategory = (req, res) => {
+export const getCategory = (req, res) => {
     return res.json(req.category);
 };
 
-exports.getCategories = (req, res) => {
+export const getCategories = (req, res) => {
     Category.find().exec((err, categories) => {
         if (err) {
             return res.status(400).json(
@@ -46,7 +46,7 @@ exports.getCategories = (req, res) => {
     })
 };
 
-exports.updateCategory = (req, res) => {
+export const updateCategory = (req, res) => {
     const category = req.category;
     category.name = req.body.name;
     category.save((err, data) => {
@@ -62,7 +62,7 @@ exports.updateCategory = (req, res) => {
     })
 }
 
-exports.deleteCategory = (req, res) => {
+export const deleteCategory = (req, res) => {
     let category = req.category;
 
     category.remove((err) => {
