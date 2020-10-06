@@ -1,10 +1,18 @@
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-const expressJwt = require('express-jwt');
-const { errorHandler } = require('../helpers/dbErrorHandler');
+import User from '../models/user';
+import jwt from 'jsonwebtoken';
+import { errorHandler } from '../helpers/dbErrorHandler';
+import expressJwt from 'express-jwt';
+import dotenv from 'dotenv';
 
-exports.signup = (req, res) => {
-    console.log('BODY', req.body);
+dotenv.config();
+
+export const requireSignin = expressJwt({
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"],
+    userProperty: "auth",
+});
+
+export const signup = (req, res) => {
     const user = new User(req.body);
     user.save((err, user) => {
         if (err) {
@@ -20,7 +28,7 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+export const signin = (req, res) => {
     const { email, password } = req.body;
 
     User.findOne({email}, (err, user) => {
@@ -47,37 +55,9 @@ exports.signin = (req, res) => {
             )
 
     });
-}
+};
 
-exports.signout = (req, res) => {
+export const signout = (req, res) => {
     res.clearCookie('token');
     res.json({ message: 'Signout successful'})
-}
-
-exports.requireSignin = expressJwt({
-    secret: process.env.JWT_SECRET,
-    algorithms: ["HS256"],
-    userProperty: "auth",
-  });
-
-  exports.isAuth = (req, res, next) => {
-      let user = req.profile && req.auth && req.profile._id == req.auth._id;
-
-      if (!user) {
-          return res.status(403).json({
-              error: "Access denied"
-          })
-      };
-
-      next();
-  };
-
-  exports.isAdmin = (req, res, next) => {
-      if (req.profile.role === 0) {
-          return res.status(403).json(
-            { error: 'Access denied' }
-        )
-      };
-
-      next();
 };

@@ -1,24 +1,21 @@
-// import express from 'express';
-// import dotenv from 'dotenv';
-const express = require('express');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const expressValidator = require('express-validator');
+import express from 'express';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
+import morgan from 'morgan';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import expressValidator from 'express-validator';
 
+// import router from './routes';
+
+import authRoutes from './routes/auth';
+import userRoutes from './routes/user';
+import categoryRoutes from './routes/category';
+import productRoutes from './routes/product';
+
+dotenv.config();
 
 const app = express();
-
-// dotenv.config()
-require('dotenv').config();
-
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
-const categoryRoutes = require('./routes/category');
-const productRoutes = require('./routes/product');
-
-
 
 mongoose.connect(process.env.DATABASE, {
     useNewUrlParser: true,
@@ -32,6 +29,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(expressValidator());
 
+// app.use('/api', router);
 app.use('/api', authRoutes);
 app.use('/api', userRoutes);
 app.use('/api', categoryRoutes);

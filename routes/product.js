@@ -1,9 +1,11 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const { create, productById, getProduct, updateProduct, deleteProduct } = require('../controllers/product');
-const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
-const { userById } = require('../controllers/user');
+import { create, productById, getProduct, updateProduct, deleteProduct } from '../controllers/product';
+import { requireSignin } from '../controllers/auth';
+import { isAuth, isAdmin } from '../middlewares/authMiddlewares';
+import { userById } from '../controllers/user';
+
+const router = express.Router();
 
 router.get('/product/:productId', getProduct);
 router.post('/product/create/:userId', requireSignin, isAuth, isAdmin, create);
@@ -14,4 +16,4 @@ router.delete('/product/:productId/:userId', requireSignin, isAuth, isAdmin, del
 router.param('userId', userById);
 router.param('productId', productById);
 
-module.exports = router;
+export default router;
