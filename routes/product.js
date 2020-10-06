@@ -1,17 +1,33 @@
 import express from 'express';
 
-import { create, productById, getProduct, updateProduct, deleteProduct } from '../controllers/product';
+import { 
+    productById,
+    createProduct,
+    getProduct,
+    updateProduct,
+    deleteProduct,
+    getProducts,
+    getRelatedProducts,
+    getCategories,
+    getProductsBySearch,
+    getProductPhoto
+} from '../controllers/product';
+import { userById } from '../controllers/user';
 import { requireSignin } from '../controllers/auth';
 import { isAuth, isAdmin } from '../middlewares/authMiddlewares';
-import { userById } from '../controllers/user';
 
 const router = express.Router();
 
+router.post('/product/create/:userId', requireSignin, isAuth, isAdmin, createProduct);
 router.get('/product/:productId', getProduct);
-router.post('/product/create/:userId', requireSignin, isAuth, isAdmin, create);
 router.put('/product/:productId/:userId', requireSignin, isAuth, isAdmin, updateProduct);
 router.delete('/product/:productId/:userId', requireSignin, isAuth, isAdmin, deleteProduct);
 
+router.get('/products', getProducts);
+router.get('/products/related/:productId', getRelatedProducts);
+router.get('/products/categories', getCategories);
+router.post('/products/by/search', getProductsBySearch);
+router.get('/product/photo/:productId', getProductPhoto);
 
 router.param('userId', userById);
 router.param('productId', productById);
